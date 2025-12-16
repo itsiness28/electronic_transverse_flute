@@ -6,15 +6,30 @@ public class Drums_Controller : MonoBehaviour
     public SpriteRenderer Base_Feet;
     public SpriteRenderer Snare_1;
     public SpriteRenderer Snare_2;
+    public SpriteRenderer Hit_hat;
     public SpriteRenderer Drum_1;
     public SpriteRenderer Drum_2;
     public SpriteRenderer Drum_3;
     public SpriteRenderer Drum_4;
-    public bool playAvailable = false;
 
     //para audios
-    public AudioSource audioSource;
-    public AudioClip[] beats;
+    public AudioSource AS_snare1;
+    public AudioSource AS_snare2;
+    public AudioSource AS_hithat;
+    public AudioSource AS_drum1;
+    public AudioSource AS_drum2;
+    public AudioSource AS_drum3;
+    public AudioSource AS_drum4;
+    public AudioSource AS_basefeet;
+
+    public AudioClip Base_Feet_Clip;
+    public AudioClip Snare1_Clip;
+    public AudioClip Snare2_Clip;
+    public AudioClip HitHat_Clip;
+    public AudioClip Drum1_Clip;
+    public AudioClip Drum2_Clip;
+    public AudioClip Drum3_Clip;
+    public AudioClip Drum4_Clip;
 
     private Color hitColor = Color.violet;
     //variables
@@ -24,25 +39,33 @@ public class Drums_Controller : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
-    {
-        ColorChange();
-        //audioSource.volume = Mathf.Lerp(audioSource.volume, regularVolume, Time.deltaTime * quickFadeSpeed);
 
+    {
+        //audioSource.volume = Mathf.Lerp(audioSource.volume, regularVolume, Time.deltaTime * quickFadeSpeed);
+        HandleDrum(Base_Feet, AS_basefeet, Base_Feet_Clip, KeyCode.Space);
+        HandleDrum(Snare_1, AS_snare1, Snare1_Clip, KeyCode.E);
+        HandleDrum(Snare_2, AS_snare2, Snare2_Clip, KeyCode.Alpha1);
+        HandleDrum(Hit_hat, AS_hithat, HitHat_Clip, KeyCode.Q);
+        HandleDrum(Drum_1, AS_drum1, Drum1_Clip, KeyCode.LeftArrow);
+        HandleDrum(Drum_2, AS_drum2, Drum2_Clip, KeyCode.UpArrow);
+        HandleDrum(Drum_3, AS_drum3, Drum3_Clip, KeyCode.DownArrow);
+        HandleDrum(Drum_4, AS_drum4, Drum4_Clip, KeyCode.RightArrow);
     }
 
-    public void ColorChange()
+    void HandleDrum(SpriteRenderer sprite, AudioSource audio, AudioClip clip, KeyCode key)
     {
-        Base_Feet.color = Input.GetKey(KeyCode.Space) ? hitColor : Color.white;
-        Snare_1.color = Input.GetKey(KeyCode.Q) ? hitColor : Color.white;
-        Drum_1.color = Input.GetKey(KeyCode.A) ? hitColor : Color.white;
-        Drum_2.color = Input.GetKey(KeyCode.W) ? hitColor : Color.white;
-        Drum_3.color = Input.GetKey(KeyCode.S) ? hitColor : Color.white;
-        Drum_4.color = Input.GetKey(KeyCode.D) ? hitColor : Color.white;
+        // Color mientras se pulsa
+        sprite.color = Input.GetKey(key) ? hitColor : Color.white;
 
+        // Golpe de sonido
+        if (Input.GetKeyDown(key) && audio != null && clip != null)
+        {
+            audio.PlayOneShot(clip);
+        }
     }
 }
